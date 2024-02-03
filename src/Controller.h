@@ -14,14 +14,27 @@ class Controller {
     ~Controller();
     #endif
   private:
-    int16_t joystick_left_x;
-    int16_t joystick_left_y;
-    int16_t joystick_right_x;
-    int16_t joystick_right_y;
-    uint8_t trigger_left;
-    uint8_t trigger_right;
-    uint8_t dpad_and_buttons;
-    uint8_t padding;
+    int16_t joystick_left_x = 0;
+    int16_t joystick_left_y = 0;
+    int16_t joystick_right_x = 0;
+    int16_t joystick_right_y = 0;
+    int16_t trigger_left = 0;
+    int16_t trigger_right = 0;
+    uint8_t dpad_up : 1 = 0;
+    uint8_t dpad_right : 1 = 0;
+    uint8_t dpad_down : 1 = 0;
+    uint8_t dpad_left : 1 = 0;
+    uint8_t button_y : 1 = 0;
+    uint8_t button_b : 1 = 0;
+    uint8_t button_a : 1 = 0;
+    uint8_t button_x : 1 = 0;
+    uint8_t button_stick_left : 1 = 0;
+    uint8_t button_stick_right : 1 = 0;
+    uint8_t bumper_left : 1 = 0;
+    uint8_t bumper_right : 1 = 0;
+    uint8_t button_extra_a : 1 = 0;
+    uint8_t button_extra_b : 1 = 0;
+    uint8_t button_extra_c : 1 = 0;
     // Platform specific code
     #ifdef _WIN32
     // TODO: Implement windows platform
