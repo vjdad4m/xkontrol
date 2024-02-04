@@ -1,5 +1,6 @@
 #include "Controller.h"
 #include <iostream>
+#include <cstring>
 
 // Platform specific contruction
 #ifdef _WIN32
@@ -122,6 +123,8 @@ void Controller::update() {
 }
 #endif
 
+// Platform independent implementations
+
 void Controller::printState() {
   std::cout << "Controller State" << std::endl;
   std::cout << "Left joystick: (x: " << Controller::joystick_left_x
@@ -143,4 +146,73 @@ void Controller::printState() {
   std::cout << "Extra buttons: " << (bool)Controller::button_extra_a << ", "
             << (bool)Controller::button_extra_b << ", " << (bool)Controller::button_extra_c
             << std::endl;
+}
+
+void Controller::serialize(uint8_t* output_buffer) {
+    int index = 0;
+
+    // Store joystick positions
+    memcpy(output_buffer + index, &joystick_left_x, sizeof(joystick_left_x));
+    index += sizeof(joystick_left_x);
+    memcpy(output_buffer + index, &joystick_left_y, sizeof(joystick_left_y));
+    index += sizeof(joystick_left_y);
+    memcpy(output_buffer + index, &joystick_right_x, sizeof(joystick_right_x));
+    index += sizeof(joystick_right_x);
+    memcpy(output_buffer + index, &joystick_right_y, sizeof(joystick_right_y));
+    index += sizeof(joystick_right_y);
+
+    // Store trigger positions
+    memcpy(output_buffer + index, &trigger_left, sizeof(trigger_left));
+    index += sizeof(trigger_left);
+    memcpy(output_buffer + index, &trigger_right, sizeof(trigger_right));
+    index += sizeof(trigger_right);
+
+    // Store button states
+    uint16_t buttons = dpad_up | (dpad_right << 1) | (dpad_down << 2) | (dpad_left << 3) |
+                       (button_y << 4) | (button_b << 5) | (button_a << 6) | (button_x << 7) |
+                       (button_stick_left << 8) | (button_stick_right << 9) |
+                       (bumper_left << 10) | (bumper_right << 11) |
+                       (button_extra_a << 12) | (button_extra_b << 13) | (button_extra_c << 14);
+
+    memcpy(output_buffer + index, &buttons, sizeof(buttons));
+}
+
+void Controller::loadState(const uint8_t* in_buffer) {
+    int index = 0;
+
+    // Unpack joystick positions
+    memcpy(&joystick_left_x, in_buffer + index, sizeof(joystick_left_x));
+    index += sizeof(joystick_left_x);
+    memcpy(&joystick_left_y, in_buffer + index, sizeof(joystick_left_y));
+    index += sizeof(joystick_left_y);
+    memcpy(&joystick_right_x, in_buffer + index, sizeof(joystick_right_x));
+    index += sizeof(joystick_right_x);
+    memcpy(&joystick_right_y, in_buffer + index, sizeof(joystick_right_y));
+    index += sizeof(joystick_right_y);
+
+    // Unpack trigger positions
+    memcpy(&trigger_left, in_buffer + index, sizeof(trigger_left));
+    index += sizeof(trigger_left);
+    memcpy(&trigger_right, in_buffer + index, sizeof(trigger_right));
+    index += sizeof(trigger_right);
+
+    // Unpack button states
+    uint16_t buttons;
+    memcpy(&buttons, in_buffer + index, sizeof(buttons));
+
+    dpad_up = buttons & 1;
+    dpad_right = (buttons >> 1) & 1;
+    dpad_down = (buttons >> 2) & 1;
+    dpad_left = (buttons >> 3) & 1;
+    button_y = (buttons >> 4) & 1;
+    button_b = (buttons >> 5) & 1;
+    button_a = (buttons >> 6) & 1;
+    button_x = (buttons >> 7) & 1;
+    button_stick_left = (buttons >> 8) & 1;
+    button_stick_right = (buttons >> 9) & 1;
+    bumper_left = (buttons >> 10) & 1;
+    bumper_right = (buttons >> 11) & 1;
+    button_extra_a = (buttons >> 12) & 1;
+    button_extra_b = (buttons >> 13) & 1;
+    button_extra_c = (buttons >> 14) & 1;
 }

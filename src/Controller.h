@@ -3,8 +3,8 @@
 class Controller {
   public:
     void printState();
-    void serialize();
-    void loadState();
+    void serialize(uint8_t* output_buffer);
+    void loadState(const uint8_t* in_buffer);
     void update();
     // Platform specific code
     #ifdef _WIN32 // TODO: Implement windows platform
