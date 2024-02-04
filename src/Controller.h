@@ -2,6 +2,7 @@
 
 class Controller {
   public:
+    void printState();
     void serialize();
     void loadState();
     void update();
@@ -18,8 +19,8 @@ class Controller {
     int16_t joystick_left_y = 0;
     int16_t joystick_right_x = 0;
     int16_t joystick_right_y = 0;
-    int16_t trigger_left = 0;
-    int16_t trigger_right = 0;
+    uint16_t trigger_left = 1;
+    uint16_t trigger_right = 1;
     uint8_t dpad_up : 1 = 0;
     uint8_t dpad_right : 1 = 0;
     uint8_t dpad_down : 1 = 0;
