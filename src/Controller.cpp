@@ -2,13 +2,48 @@
 #include <iostream>
 #include <cstring>
 
-// Platform specific contruction
+// Platform specific constructor and update methods
 #ifdef _WIN32
-// TODO: Implement windows platform
+#include <Windows.h>
+#include <Xinput.h>
+
+Controller::Controller() {}
+
+Controller::~Controller() {}
+
+void Controller::update() {
+  XINPUT_STATE state;
+  ZeroMemory(&state, sizeof(XINPUT_STATE));
+  if (XInputGetState(0, &state) == ERROR_SUCCESS) {
+    Controller::joystick_left_x = state.Gamepad.sThumbLX;
+    Controller::joystick_left_y = state.Gamepad.sThumbLY;
+    Controller::joystick_right_x = state.Gamepad.sThumbRX;
+    Controller::joystick_right_y = state.Gamepad.sThumbRY;
+    // Convert trigger values from 0-255 to 0-65535
+    Controller::trigger_left = static_cast<uint16_t>(state.Gamepad.bLeftTrigger * (65535.0 / 255.0));
+    Controller::trigger_right =  static_cast<uint16_t>(state.Gamepad.bRightTrigger * (65535.0 / 255.0));
+    Controller::dpad_up = (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) != 0;
+    Controller::dpad_right = (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) != 0;
+    Controller::dpad_down = (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) != 0;
+    Controller::dpad_left = (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) != 0;
+    Controller::button_y = (state.Gamepad.wButtons & XINPUT_GAMEPAD_Y) != 0;
+    Controller::button_b = (state.Gamepad.wButtons & XINPUT_GAMEPAD_B) != 0;
+    Controller::button_a = (state.Gamepad.wButtons & XINPUT_GAMEPAD_A) != 0;
+    Controller::button_x = (state.Gamepad.wButtons & XINPUT_GAMEPAD_X) != 0;
+    Controller::button_stick_left = (state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB) != 0;
+    Controller::button_stick_right = (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) != 0;
+    Controller::bumper_left = (state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) != 0;
+    Controller::bumper_right = (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) != 0;
+    Controller::button_extra_a = (state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) != 0;
+    Controller::button_extra_b = (state.Gamepad.wButtons & XINPUT_GAMEPAD_START) != 0;
+  }
+}
+
 #elif defined(__linux__)
 #include <linux/joystick.h>
 #include <fcntl.h>
 #include <unistd.h>
+
 Controller::Controller(char* device_path) {
   Controller::joystick_device = open(device_path, 0, O_RDONLY);
   if (Controller::joystick_device < 0) {

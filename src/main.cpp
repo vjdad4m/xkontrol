@@ -16,8 +16,9 @@ void printBitsBuffer(uint8_t* buffer) {
 }
 
 int main() {
+  std::cout << "Hello, World!" << std::endl;
   char* device_path = "/dev/input/js1";
-  Controller ctrl(device_path);
+  Controller ctrl;
   uint8_t buffer[STATE_BUFFER_SIZE]; // State byte array
   while (true) {
     ctrl.update();
