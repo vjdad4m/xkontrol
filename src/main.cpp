@@ -16,10 +16,16 @@ void printBitsBuffer(uint8_t* buffer) {
 }
 
 int main() {
-  std::cout << "Hello, World!" << std::endl;
-  char* device_path = "/dev/input/js1";
-  Controller ctrl;
+  // Initialize controller
+  #ifdef __linux__
+    device_path = "/dev/input/js1";
+    Controller ctrl(device_path);
+  #elif _WIN32
+    Controller ctrl;
+  #endif
+
   uint8_t buffer[STATE_BUFFER_SIZE]; // State byte array
+
   while (true) {
     ctrl.update();
     std::cout << "== Current state ==" << std::endl;
