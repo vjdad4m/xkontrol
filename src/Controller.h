@@ -38,7 +38,6 @@ class Controller {
     uint8_t button_extra_c : 1 = 0;
     // Platform specific code
     #ifdef _WIN32
-    // TODO: Implement windows platform
     #elif defined(__linux__)
     int joystick_device;
     #endif
