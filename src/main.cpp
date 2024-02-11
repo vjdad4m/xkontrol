@@ -18,7 +18,7 @@ void printBitsBuffer(uint8_t* buffer) {
 int main() {
   // Initialize controller
   #ifdef __linux__
-    device_path = "/dev/input/js1";
+    static char* device_path = "/dev/input/js1";
     Controller ctrl(device_path);
   #elif _WIN32
     Controller ctrl;
