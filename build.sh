@@ -1,15 +1,20 @@
 #!/bin/bash
 
-mkdir -p bin
+mkdir -p build
 
-CPP_FILE="src/Controller.cpp src/main.cpp"
+cmake -S . -B build
+cmake --build build
 
-EXE_FILE="bin/xkontrol"
+# mkdir -p bin
 
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  g++ -o $EXE_FILE $CPP_FILE 
-elif [[ "$OSTYPE" == "msys" ]]; then
-  g++ -o $EXE_FILE $CPP_FILE -lXInput -std=c++2a
-else
-  echo "Unsupported OS $OSTYPE"
-fi
+# CPP_FILE="src/Controller.cpp src/main.cpp"
+
+# EXE_FILE="bin/xkontrol"
+
+# if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+#   g++ -o $EXE_FILE $CPP_FILE 
+# elif [[ "$OSTYPE" == "msys" ]]; then
+#   g++ -o $EXE_FILE $CPP_FILE -lXInput -std=c++2a
+# else
+#   echo "Unsupported OS $OSTYPE"
+# fi
