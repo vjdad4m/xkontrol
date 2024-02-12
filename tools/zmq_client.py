@@ -10,18 +10,22 @@ subscriber.setsockopt_string(zmq.SUBSCRIBE, '')
 subscriber.setsockopt(zmq.RCVTIMEO, 1000)
 
 try:
-    while True:
-        message = subscriber.recv()
+  while True:
+    try:
+      message = subscriber.recv()
+    # Timeout exception
+    except zmq.error.Again:
+      continue
 
-        print("Received serialized state: ", message)
-        
-        for byte in message:
-            print(bin(byte)[2:].zfill(8), end=' ')
-        print()
+    print("Received serialized state: ", message)
+    
+    for byte in message:
+      print(bin(byte)[2:].zfill(8), end=' ')
+    print()
     
 except KeyboardInterrupt:
-    print("Exiting...")
+  print("Exiting...")
 
 finally:
-    subscriber.close()
-    context.term()
+  subscriber.close()
+  context.term()
