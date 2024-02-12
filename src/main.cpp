@@ -1,5 +1,8 @@
 #include <iostream>
 #include <thread>
+#include <zmq.hpp>
+#include <chrono>
+
 #include "Controller.h"
 
 #define STATE_BUFFER_SIZE 14
@@ -26,6 +29,12 @@ int main() {
 
   uint8_t buffer[STATE_BUFFER_SIZE]; // State byte array
 
+  // Initialize ZeroMQ publisher
+  zmq::context_t context(1);
+  zmq::socket_t publisher(context, ZMQ_PUB);
+
+  publisher.bind("tcp://*:5556");
+
   while (true) {
     ctrl.update();
     std::cout << "== Current state ==" << std::endl;
@@ -33,10 +42,18 @@ int main() {
     ctrl.serialize(buffer);
     std::cout << "== Serialized state ==" << std::endl;
     printBitsBuffer(buffer);
+
+    // Send serialized state
+    zmq::message_t message(buffer, STATE_BUFFER_SIZE);
+    publisher.send(message, zmq::send_flags::none);
+
     ctrl.loadState(buffer);
     std::cout << "== Deserialized state ==" << std::endl;
     ctrl.printState();
     std::cout << std::endl;
+
+    // Sleep for 20ms
+    std::this_thread::sleep_for(std::chrono::milliseconds(20));
   }
 
   return 0;

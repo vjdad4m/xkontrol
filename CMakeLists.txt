@@ -14,4 +14,6 @@ if (UNIX)
   set(CMAKE_LIBS "")
 endif (UNIX)
 
-target_link_libraries(xkontrol ${CMAKE_LIBS})
+find_package(ZeroMQ CONFIG REQUIRED)
+
+target_link_libraries(xkontrol ${CMAKE_LIBS} libzmq libzmq-static)

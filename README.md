@@ -16,6 +16,5 @@ sh .\build.sh
 ## TODO
 
 * python bindings
-* zmq streaming
 * visualization
 * error handling and proper logging
