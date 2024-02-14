@@ -1,29 +1,37 @@
 # Xkontrol
 
-bindings for the gxtrust wired muta controller
+<div align="center">
+<img src="./assets/xkontrol_logo.png" width=256px>
 
-Controller libraries used (built-in):
-* on linux: `linux/joystick.h`
-* on windows: `Xinput.h` (might need to download https://www.microsoft.com/en-us/download/details.aspx?id=35)
+Xkontrol: Bindings and tools for wired X input type controllers.
+</div>
+
+---
 
 ## Build
 
 ### Dependencies
 
-windows
+Controller libraries used *(built-in)*:
+* on linux: `linux/joystick.h`
+* on windows: `Xinput.h`
 
-1. install [vcpkg](https://github.com/microsoft/vcpkg)
-2. install `cppzmq` and `zeromq` packages
+Windows
+
+1. Download [DirectX End-User Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=35)
+2. Download [vcpkg](https://github.com/microsoft/vcpkg)
+3. Install the `cppzmq` and `zeromq` packages
 
 ### Install
 
-linux & windows
+Linux & windows
 ```
+git clone https://github.com/vjdad4m/xkontrol
+cd xkontrol
 sh .\build.sh
 ```
 
 ## TODO
 
-* python bindings
-* visualization
-* error handling and proper logging
+* Visualization
+* Error handling and proper logging
