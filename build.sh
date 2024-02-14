@@ -18,3 +18,6 @@ cmake --build build
 # else
 #   echo "Unsupported OS $OSTYPE"
 # fi
+
+# Return to the shell
+$SHELL
