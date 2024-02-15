@@ -16,6 +16,10 @@ Controller libraries used *(built-in)*:
 * on linux: `linux/joystick.h`
 * on windows: `Xinput.h`
 
+Linux
+
+1. Install `libzmq3-dev` and `cppzmq-dev`
+
 Windows
 
 1. Download [DirectX End-User Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=35)
@@ -25,9 +29,17 @@ Windows
 ### Install
 
 Linux & windows
+
+1. Clone this repository
 ```
 git clone https://github.com/vjdad4m/xkontrol
+```
+2. Change directories
+```
 cd xkontrol
+```
+3. Run the build process
+```
 sh .\build.sh
 ```
 
