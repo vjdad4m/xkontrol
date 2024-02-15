@@ -3,11 +3,11 @@
 #include <thread>
 #include <chrono>
 
-Application::Application(const std::string& zmq_bind_address, const std::string& devicePath) : context(1), publisher(context, ZMQ_PUB) {
+Application::Application(std::string& zmq_bind_address, const std::string& devicePath) : context(1), publisher(context, ZMQ_PUB) {
   #ifdef __linux__
   // Initialize controller
   if (!devicePath.empty()) {
-    ctrl = Controller(devicePath);
+    ctrl = std::make_unique<Controller>(devicePath.c_str());
   }
   #endif
   publisher.bind(zmq_bind_address);
@@ -23,10 +23,10 @@ void Application::run() {
   uint8_t buffer[STATE_BUFFER_SIZE]; // State byte array
 
   while (true) {
-    ctrl.update();
+    ctrl->update();
     std::cout << "== Current state ==" << std::endl;
-    ctrl.printState();
-    ctrl.serialize(buffer);
+    ctrl->printState();
+    ctrl->serialize(buffer);
     std::cout << "== Serialized state ==" << std::endl;
     printBitsBuffer(buffer);
 
@@ -34,9 +34,9 @@ void Application::run() {
     zmq::message_t message(buffer, STATE_BUFFER_SIZE);
     publisher.send(message, zmq::send_flags::none);
 
-    ctrl.loadState(buffer);
+    ctrl->loadState(buffer);
     std::cout << "== Deserialized state ==" << std::endl;
-    ctrl.printState();
+    ctrl->printState();
     std::cout << std::endl;
 
     // Sleep for 20ms

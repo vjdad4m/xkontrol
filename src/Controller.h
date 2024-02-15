@@ -11,7 +11,7 @@ class Controller {
     Controller();
     ~Controller();
     #elif defined(__linux__)
-    Controller(char* device_path);
+    Controller(const char* device_path);
     ~Controller();
     #endif
   private:

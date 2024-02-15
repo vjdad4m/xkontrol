@@ -44,7 +44,7 @@ void Controller::update() {
 #include <fcntl.h>
 #include <unistd.h>
 
-Controller::Controller(char* device_path) {
+Controller::Controller(const char* device_path) {
   Controller::joystick_device = open(device_path, 0, O_RDONLY);
   if (Controller::joystick_device < 0) {
     std::cerr << "Could not open joystick device." << std::endl;

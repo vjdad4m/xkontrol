@@ -7,13 +7,12 @@ file(GLOB SOURCE_FILES "src/*.h" "src/*.cpp")
 add_executable(xkontrol ${SOURCE_FILES})
 
 if (WIN32)
-  set(CMAKE_LIBS "Xinput.lib")
+  find_package(ZeroMQ CONFIG REQUIRED)
+  set(CMAKE_LIBS "Xinput.lib libzmq libzmq-static")
 endif (WIN32)
 
 if (UNIX)
-  set(CMAKE_LIBS "")
+  set(CMAKE_LIBS "zmq")
 endif (UNIX)
 
-find_package(ZeroMQ CONFIG REQUIRED)
-
-target_link_libraries(xkontrol ${CMAKE_LIBS} libzmq libzmq-static)
+target_link_libraries(xkontrol ${CMAKE_LIBS})
